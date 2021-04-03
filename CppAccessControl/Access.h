@@ -1,7 +1,13 @@
 #pragma once
 
 
+class Daughter;
+class Son;
+
 class Parent {
+
+	friend class Son;
+	friend class Daughter;
 
 public:
 	struct Child {
@@ -13,10 +19,7 @@ public:
 
 private:
 	int count = 0;
-
-protected:
 	struct Child* child = NULL;
-
 	void AddTotal() { child->TotalCount++; }
 
 public:
@@ -43,10 +46,33 @@ public:
 
 };
 
-class Daughter;
-class Son;
 
-class Daughter : public Parent {
+class Son {
+
+public:
+	void Add() {
+		SCount++;
+		AddTotal();
+	}
+
+	void SetName(char* Name)
+	{
+		SName = Name;
+	}
+
+	char* SisterName(Daughter* d);
+	// This made error.
+	//{
+	//	return d->DName;
+	//}
+
+private:
+	friend  Daughter;
+	char* SName;
+};
+
+
+class Daughter {
 
 public:
 	void Add() {
@@ -68,30 +94,6 @@ public:
 private:
 	friend Son;
 	char* DName;
-};
-
-class Son : public Parent {
-
-public:
-	void Add() {
-		child->SCount++;
-		AddTotal();
-	}
-
-	void SetName(char* Name)
-	{
-		SName = Name;
-	}
-
-	char* SisterName(Daughter* d);
-	// This made error.
-	//{
-	//	return d->DName;
-	//}
-
-private:
-	friend  Daughter;
-	char* SName;
 };
 
 
